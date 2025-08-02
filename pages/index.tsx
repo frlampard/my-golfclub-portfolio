@@ -9,7 +9,7 @@ type GolfClub = {
   id: number;
   name: string;
   location: string;
-  visited_date: string;
+  visited_date: Date | null;
   type: string;
   cafeteria: boolean;
   cafeteria_fee: string;
