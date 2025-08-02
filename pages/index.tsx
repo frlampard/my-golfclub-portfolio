@@ -9,7 +9,7 @@ type GolfClub = {
   id: number;
   name: string;
   location: string;
-  visited_date: Date | null;
+  visited_date: string | null;
   type: string;
   cafeteria: boolean;
   cafeteria_fee: string;
@@ -84,12 +84,14 @@ export default function HomePage({ golfclubs }: HomePageProps) {
 }
 
 // 날짜 포맷 유틸 함수
-const formatDate = (dateString: string) =>
-  new Date(dateString).toLocaleDateString('ko-KR', {
+const formatDate = (dateString: string | null) => {
+  if (!dateString) return 'N/A'; // 혹은 '-'
+  return new Date(dateString).toLocaleDateString('ko-KR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
+};
 
 // SSR 데이터 패칭
 export const getServerSideProps: GetServerSideProps = async () => {
