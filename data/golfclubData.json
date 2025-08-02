@@ -1,0 +1,13 @@
+[
+    {
+        "id": "1",
+        "name": "렉스필드cc",
+        "location": "경기도 여주시 산북면 광여로 1115",
+        "visitedDate": "2024-11-11",
+        "type": "Private",
+        "cafeteria": "Yes",
+        "cafeteriaFee": "7,000원",
+        "sleepingLounge": "Yes",
+        "sleepingLoungeSize": "4~5명"
+    }
+]

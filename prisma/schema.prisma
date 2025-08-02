@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model golfclubs {
+  id                   Int       @id @default(autoincrement())
+  name                 String    @db.VarChar(100)
+  location             String
+  visited_date         DateTime? @db.Date
+  type                 String?   @db.VarChar(50)
+  cafeteria            Boolean?
+  cafeteria_fee        String?   @db.VarChar(20)
+  sleeping_lounge      Boolean?
+  sleeping_lounge_size String?   @db.VarChar(20)
+}
