@@ -61,7 +61,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const serialzedClub = {
     ...club,
-    visited_date: club.visited_date.toISOString(), // 날짜를 문자열로 변환
+    visited_date: club.visited_date
+    ? club.visited_date.toISOString()
+    : null,
   };
 
   return {
