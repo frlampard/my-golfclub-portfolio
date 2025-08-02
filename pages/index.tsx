@@ -100,7 +100,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const serialized = golfclubs.map((club) => ({
     ...club,
     visited_date: club.visited_date
-      ? club.visited_date.toISOString()
+      ? new Date(club.visited_date).toISOString()
       : null, // visited_date가 null일 경우 처리
   }));
 
