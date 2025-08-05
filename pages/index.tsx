@@ -1,4 +1,3 @@
-// pages/index.tsx
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -49,23 +48,23 @@ export default function HomePage({ golfclubs }: HomePageProps) {
         <table className="min-w-full border text-sm">
           <thead>
             <tr className="bg-gray-100 text-left">
+              <th>No.</th>
               <th className="border p-2">골프장 이름</th>
               <th className="border p-2">위치</th>
-              <th className="border p-2">최근 방문일</th>
               <th className="border p-2">타입</th>
             </tr>
           </thead>
           <tbody>
             {filteredGolfclubs.length > 0 ? (
-              filteredGolfclubs.map((club) => (
+              filteredGolfclubs.map((club, index) => (
                 <tr key={club.id} className="hover:bg-gray-50">
+                  <td>{ index+1 }</td>
                   <td className="border p-2">
                     <Link href={`/golf/${club.id}`} className="text-blue-600 hover:underline">
                       {club.name}
                     </Link>
                   </td>
                   <td className="border p-2">{club.location}</td>
-                  <td className="border p-2">{formatDate(club.visited_date)}</td>
                   <td className="border p-2">{club.type}</td>
                 </tr>
               ))
@@ -95,16 +94,22 @@ const formatDate = (dateString: string | null) => {
 
 // SSR 데이터 패칭
 export const getServerSideProps: GetServerSideProps = async () => {
-  const golfclubs = await prisma.golfclubs.findMany({
-    orderBy: { visited_date: 'desc' },
-  });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/golfclubs`);
+  const data = await res.json();
+  //const golfclubs = await res.json();
 
-  const serialized = golfclubs.map((club) => ({
-    ...club,
-    visited_date: club.visited_date
-      ? new Date(club.visited_date).toISOString()
-      : null, // visited_date가 null일 경우 처리
-  }));
+  //console.log('✅ data:', data);
+  //console.log('✅ array check:', Array.isArray(data.golfclobs));
+  //console.log("✅ API 응답 golfclubs:", golfclubs);
+  console.log("🟢 API fetch 결과:", data);
+  console.log("🟢 데이터 타입:", typeof data);
+  console.log("🟢 배열인가?", Array.isArray(data));
 
-  return { props: { golfclubs: serialized } };
+  //return { props: { golfclubs: data.golfclobs ?? [] } };
+  //return { props: { golfclubs }};
+  return {
+    props: {
+      golfclubs: Array.isArray(data.golfclubs) ? data.golfclubs : []
+    }
+  }
 };
