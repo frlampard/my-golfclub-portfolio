@@ -34,8 +34,11 @@ export default function HomePage({ golfclubs }: HomePageProps) {
       <Head>
         <title>GolfClub Portfolio</title>
       </Head>
-      <main className="p-6">
-        <h1 className="text-2xl font-bold mb-4">🏌️‍♂️ Welcome to My GolfClub Portfolio 🏌️‍♂️</h1>
+      <main className="border-2 border-red-500 border-dashed m-4 p-4">
+        <section>
+          <h1>
+          🏌️‍♂️ Welcome to My GolfClub Portfolio 🏌️‍♂️
+          </h1>
 
         <input
           type="text"
@@ -77,6 +80,7 @@ export default function HomePage({ golfclubs }: HomePageProps) {
             )}
           </tbody>
         </table>
+        </section>
       </main>
     </>
   );
@@ -96,7 +100,6 @@ const formatDate = (dateString: string | null) => {
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/golfclubs`);
   const data = await res.json();
-  //const golfclubs = await res.json();
 
   //console.log('✅ data:', data);
   //console.log('✅ array check:', Array.isArray(data.golfclobs));
@@ -105,8 +108,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
   console.log("🟢 데이터 타입:", typeof data);
   console.log("🟢 배열인가?", Array.isArray(data));
 
-  //return { props: { golfclubs: data.golfclobs ?? [] } };
-  //return { props: { golfclubs }};
   return {
     props: {
       golfclubs: Array.isArray(data.golfclubs) ? data.golfclubs : []
