@@ -34,19 +34,43 @@ export default function HomePage({ golfclubs }: HomePageProps) {
       <Head>
         <title>GolfClub Portfolio</title>
       </Head>
-      <main className="border-2 border-red-500 border-dashed m-4 p-4">
-        <section>
-          <h1>
+      <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-slate-50 ppx-3 py-6">
+        <section className="w-full max-w-3xl mx-auto rounded-2xl bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-xl ring-1 ring-slate-200 p-4 sm:p-6">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 text-center">
           🏌️‍♂️ Welcome to My GolfClub Portfolio 🏌️‍♂️
           </h1>
 
-        <input
-          type="text"
-          placeholder="골프장 이름 검색..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="mb-4 px-4 py-2 border rounded w-full max-w-md"
-        />
+        <div className="mt-4">
+          <label htmlFor="search" className="sr-only">골프장 검색</label>
+          <input
+            id="search"
+            type="text"
+            placeholder="골프장 검색..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-wd mx-auto block rounded-xl border border-slate-300 px-4 py-3 text-base placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400/50"
+          />
+        </div>
+
+        <ul className='mt-4 divide-y divide-slate-200 md:hidden'>
+          {filteredGolfclubs.length > 0 ? (
+            filteredGolfclubs.map((club, index) => (
+              <li>
+                <Link href={`/golf/${club.id}`} className='flex items-center gap-3 py-4 outline-none transition active:translate-y-[1px] hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400/50'>
+                <span className='w-10 shring-0 text-xs tabular-nums text-slate-400'>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className='flex-1 truncate text-base font-medium text-slate-900'>
+                  {club.name}
+                </span>
+                <span aria-hidden className='text-xl text-slate-300'>›</span>
+                </Link>
+              </li>
+            ))
+          ) : (
+            <li className='py-8 text-center text-slate-500'>검색 결과가 없습니다.</li>
+          )}
+        </ul>
 
         <table className="min-w-full border text-sm">
           <thead>
