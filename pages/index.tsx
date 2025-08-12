@@ -72,27 +72,24 @@ export default function HomePage({ golfclubs }: HomePageProps) {
           )}
         </ul>
 
-        <table className="min-w-full border text-sm">
+        <div className='mt-6 hidden md:block'>
+        <table className="min-w-full text-sm border-collapse">
           <thead>
-            <tr className="bg-gray-100 text-left">
-              <th>No.</th>
+            <tr className="bg-slate-50 text-left">
+              <th className='p-2 w-16 text-slate-500'>No.</th>
               <th className="border p-2">골프장 이름</th>
-              <th className="border p-2">위치</th>
-              <th className="border p-2">타입</th>
             </tr>
           </thead>
           <tbody>
             {filteredGolfclubs.length > 0 ? (
               filteredGolfclubs.map((club, index) => (
                 <tr key={club.id} className="hover:bg-gray-50">
-                  <td>{ index+1 }</td>
+                  <td className='p-2 text-slate-500 tabular-nums'>{ index+1 }</td>
                   <td className="border p-2">
                     <Link href={`/golf/${club.id}`} className="text-blue-600 hover:underline">
                       {club.name}
                     </Link>
                   </td>
-                  <td className="border p-2">{club.location}</td>
-                  <td className="border p-2">{club.type}</td>
                 </tr>
               ))
             ) : (
@@ -104,6 +101,7 @@ export default function HomePage({ golfclubs }: HomePageProps) {
             )}
           </tbody>
         </table>
+        </div>
         </section>
       </main>
     </>
