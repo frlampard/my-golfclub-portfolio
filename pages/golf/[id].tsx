@@ -1,72 +1,74 @@
 import { GetServerSideProps } from 'next';
 import { prisma } from '@/lib/prisma';
 import Head from 'next/head';
+import VisitorView from '@/components/golf/visiterView';
+import driverView from '@/components/golf/driverView';
+import visiterData from 'data/visiterData.json';
+import { useState } from 'react';
+import { GolfClub } from '@/types/golfs';
+import DriverView from '@/components/golf/driverView';
 
-export default function GolfclubDetail({ club }: { club: any }) {
+
+export default function GolfclubDetail({ club: serverClub }: { club: GolfClub | null }) {
+  const [isVisiterView, setIsVisiterView] = useState(false);
+  const club = visiterData.find((c) => c.id === '1');
+
+  if (!club) return <div>❌Data 불러오기 실패❌</div>
+
+  console.log('isVisiterView:', isVisiterView);
+
   return (
     <>
       <Head>
         <title>{club.name} - 상세 정보</title>
       </Head>
       <main className="p-6 max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">{club.name}</h1>
-        <table className="table-auto border-collapse border w-full text-sm">
-          <tbody>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">위치</td>
-              <td className="border px-4 py-2">{club.location}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">방문일</td>
-              <td className="border px-4 py-2">{new Date(club.visited_date).toLocaleDateString()}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">타입</td>
-              <td className="border px-4 py-2">{club.type}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">식당 여부</td>
-              <td className="border px-4 py-2">{club.cafeteria ? '예' : '아니오'}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">식당 요금</td>
-              <td className="border px-4 py-2">{club.cafeteria_fee}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">휴게실 여부</td>
-              <td className="border px-4 py-2">{club.sleeping_lounge ? '예' : '아니오'}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">휴게실 크기</td>
-              <td className="border px-4 py-2">{club.sleeping_lounge_size}</td>
-            </tr>
-          </tbody>
-        </table>
+        <h1 className="text-3xl font-bold mb-4 text-center">{club.name}</h1>
+        <div className='flex'>
+        <button
+            onClick={() => setIsVisiterView(false)}
+            className={`px-3 py-1 rounded text-sm ${!isVisiterView ? 'bg-emerald-500 text-white' : 'bg-gray-200 text-gray-700'} hover:opacity-90`}
+          >
+            일반용
+          </button>
+          <button
+            onClick={() => setIsVisiterView(true)}
+            className={`px-3 py-1 rounded text-sm ${isVisiterView ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} hover:opacity-90`}
+          >
+            기사용
+          </button>
+        </div>
+        {isVisiterView ? <DriverView club={club} /> : <VisitorView club={club} />}
       </main>
     </>
   );
 }
 
-// 서버 측 데이터 패칭
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.params?.id;
+export async function getServerSideProps({ params }: { params: { id: string } }) {
+  const visitorData = require('../../data/visiterData.json');
+  const club = visitorData.find((c: GolfClub) => c.id === params.id);
+  return { props: { club: club || null } };
+}
 
-  const club = await prisma.golfclubs.findUnique({
-    where: { id: Number(id) },
-  });
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const id = context.params?.id;
 
-  if (!club) {
-    return { notFound: true };
-  }
+//   const club = await prisma.golfclubs.findUnique({
+//     where: { id: Number(id) },
+//   });
 
-  const serialzedClub = {
-    ...club,
-    visited_date: club.visited_date
-    ? club.visited_date.toISOString()
-    : null,
-  };
+//   if (!club) {
+//     return { notFound: true };
+//   }
 
-  return {
-    props: { club: serialzedClub },
-  };
-};
+//   const serialzedClub = {
+//     ...club,
+//     visited_date: club.visited_date
+//     ? club.visited_date.toISOString()
+//     : null,
+//   };
+
+//   return {
+//     props: { club: serialzedClub },
+//   };
+// };
