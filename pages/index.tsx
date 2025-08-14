@@ -34,36 +34,37 @@ export default function HomePage({ golfclubs }: HomePageProps) {
       <Head>
         <title>GolfClub Portfolio</title>
       </Head>
-      <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-slate-50 ppx-3 py-6">
-        <section className="w-full max-w-3xl mx-auto rounded-2xl bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-xl ring-1 ring-slate-200 p-4 sm:p-6">
+      <main className='min-h-screen flex flex-col items-center justify-start bg-white p-0'>
+        <section className='w-full max-w-md mx-auto bg-white'>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 text-center">
           🏌️‍♂️ Welcome to My GolfClub Portfolio 🏌️‍♂️
           </h1>
 
-        <div className="mt-4">
-          <label htmlFor="search" className="sr-only">골프장 검색</label>
-          <input
-            id="search"
-            type="text"
-            placeholder="골프장 검색..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full max-w-wd mx-auto block rounded-xl border border-slate-300 px-4 py-3 text-base placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400/50"
-          />
-        </div>
+          <div className='mt-4 w-full'>
+            <div className='mx-auto w-[70%] min-w-0'>
+  <input
+    id="search"
+    type="text"
+    placeholder="검색..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="w-full rounded-lg border border-gray-300 px-4 py-2 text-[16px] text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+  />
+  </div>
+</div>
 
-        <ul className='mt-4 divide-y divide-slate-200 md:hidden'>
+        {/* Mobile */}
+        <ul className='mt-0 space-y-0'>
           {filteredGolfclubs.length > 0 ? (
             filteredGolfclubs.map((club, index) => (
-              <li>
-                <Link href={`/golf/${club.id}`} className='flex items-center gap-3 py-4 outline-none transition active:translate-y-[1px] hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400/50'>
-                <span className='w-10 shring-0 text-xs tabular-nums text-slate-400'>
+              <li key={club.id}>
+                <Link href={`/golf/${club.id}`}>
+                <span className='w-10 shrink-0 text-[11px] tabular-nums font-semibold text-emerald-700/80'>
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <span className='flex-1 truncate text-base font-medium text-slate-900'>
-                  {club.name}
+                <span className='ml-3 flex-1 text-sm font-medium text-gray-900 min-w-0 truncate'>
+                ⛳️{club.name}
                 </span>
-                <span aria-hidden className='text-xl text-slate-300'>›</span>
                 </Link>
               </li>
             ))
@@ -72,45 +73,36 @@ export default function HomePage({ golfclubs }: HomePageProps) {
           )}
         </ul>
 
-        <div className='mt-6 hidden md:block'>
-        <table className="min-w-full text-sm border-collapse">
-          <thead>
-            <tr className="bg-slate-50 text-left">
-              <th className='p-2 w-16 text-slate-500'>No.</th>
-              <th className="border p-2">골프장 이름</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredGolfclubs.length > 0 ? (
-              filteredGolfclubs.map((club, index) => (
-                <tr key={club.id} className="hover:bg-gray-50">
-                  <td className='p-2 text-slate-500 tabular-nums'>{ index+1 }</td>
-                  <td className="border p-2">
-                    <Link href={`/golf/${club.id}`} className="text-blue-600 hover:underline">
-                      {club.name}
-                    </Link>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={4} className="border p-2 text-center text-gray-500">
-                  검색 결과가 없습니다.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-        </div>
+        {/* Desktop */}
+        <div className='hidden lg:block'>
+  <ul className='mt-0 space-y-0'>
+    {filteredGolfclubs.length > 0 ? (
+      filteredGolfclubs.map((club, index) => (
+        <li key={club.id}>
+          <Link href={`/golf/${club.id}`} className='flex items-center p-4 border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200'>
+            <span className='ml-3 flex-1 text-sm font-medium text-gray-900'>
+              {club.name}
+            </span>
+            <span className='text-xs text-gray-500'>{club.location}</span>
+            <svg className='h-5 w-5 text-gray-400 ml-2' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+              <path d='M9 18l6-6-6-6' />
+            </svg>
+          </Link>
+        </li>
+      ))
+    ) : (
+      <li className='p-4 text-center text-gray-500 text-sm'>검색 결과가 없습니다.</li>
+    )}
+  </ul>
+</div>
         </section>
       </main>
     </>
   );
 }
 
-// 날짜 포맷 유틸 함수
 const formatDate = (dateString: string | null) => {
-  if (!dateString) return 'N/A'; // 혹은 '-'
+  if (!dateString) return 'N/A';
   return new Date(dateString).toLocaleDateString('ko-KR', {
     year: 'numeric',
     month: 'long',
@@ -118,17 +110,9 @@ const formatDate = (dateString: string | null) => {
   });
 };
 
-// SSR 데이터 패칭
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/golfclubs`);
   const data = await res.json();
-
-  //console.log('✅ data:', data);
-  //console.log('✅ array check:', Array.isArray(data.golfclobs));
-  //console.log("✅ API 응답 golfclubs:", golfclubs);
-  console.log("🟢 API fetch 결과:", data);
-  console.log("🟢 데이터 타입:", typeof data);
-  console.log("🟢 배열인가?", Array.isArray(data));
 
   return {
     props: {
