@@ -1,13 +1,12 @@
 import { GetServerSideProps } from 'next';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '../../lib/prisma';
 import Head from 'next/head';
-import VisitorView from '@/components/golf/visiterView';
-import driverView from '@/components/golf/driverView';
-import visiterData from 'data/visiterData.json';
+import VisitorView from '../../components/golf/visiterView';
+import DriverView from '../../components/golf/driverView';
+import visiterData from '../../data/visiterData.json';
 import { useState } from 'react';
-import { GolfClub } from '@/types/golfs';
-import DriverView from '@/components/golf/driverView';
-
+import { GolfClub } from '../../types/golfs';
+import React from 'react';
 
 export default function GolfclubDetail({ club: serverClub }: { club: GolfClub | null }) {
   const [isVisiterView, setIsVisiterView] = useState(false);
@@ -15,7 +14,7 @@ export default function GolfclubDetail({ club: serverClub }: { club: GolfClub | 
 
   if (!club) return <div>❌Data 불러오기 실패❌</div>
 
-  console.log('isVisiterView:', isVisiterView);
+  //console.log('isVisiterView:', isVisiterView);
 
   return (
     <>
@@ -23,7 +22,7 @@ export default function GolfclubDetail({ club: serverClub }: { club: GolfClub | 
         <title>{club.name} - 상세 정보</title>
       </Head>
       <main className="p-6 max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 text-center">{club.name}</h1>
+        <h1 className="text-3xl font-bold mb-4 text-center">⛳️ {club.name}</h1>
         <div className='flex'>
         <button
             onClick={() => setIsVisiterView(false)}

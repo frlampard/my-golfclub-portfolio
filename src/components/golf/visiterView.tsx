@@ -1,5 +1,5 @@
 import React from 'react';
-import { GolfClub } from '@/types/golfs';
+import { GolfClub } from '../../types/golfs';
 
 type VisitorViewProps = {
   club: GolfClub;
@@ -8,8 +8,7 @@ type VisitorViewProps = {
 const VisitorView: React.FC<VisitorViewProps> = ({ club }) => {
   return (
     <div className="p-3 bg-white border border-gray-200 rounded-lg space-y-2">
-      <h2 className="text-sm font-medium text-gray-900">일반 정보</h2>
-      <p className="text-xs text-gray-500">이름: {club.name}</p>
+      <h1 className="text-sm font-medium text-gray-900">일반 정보</h1>
       <p className="text-xs text-gray-500">위치: {club.location}</p>
       <p className="text-xs text-gray-500">타입: {club.type}</p>
       <p className="text-xs text-gray-500">소유권: {club.ownership}</p>

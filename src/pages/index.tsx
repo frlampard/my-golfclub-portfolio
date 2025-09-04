@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
-import { prisma } from '@/lib/prisma';
+import React from 'react';
 
 type GolfClub = {
   id: number;
@@ -29,6 +29,8 @@ export default function HomePage({ golfclubs }: HomePageProps) {
     );
   }, [searchTerm, golfclubs]);
 
+  //console.log('filteredGolfclubs: ', filteredGolfclubs);
+
   return (
     <>
       <Head>
@@ -54,17 +56,24 @@ export default function HomePage({ golfclubs }: HomePageProps) {
 </div>
 
         {/* Mobile */}
-        <ul className='mt-0 space-y-0'>
+        <ul className='mt-0 divide-y divide-gray-200'>
           {filteredGolfclubs.length > 0 ? (
             filteredGolfclubs.map((club, index) => (
               <li key={club.id}>
-                <Link href={`/golf/${club.id}`}>
-                <span className='w-10 shrink-0 text-[11px] tabular-nums font-semibold text-emerald-700/80'>
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className='ml-3 flex-1 text-sm font-medium text-gray-900 min-w-0 truncate'>
-                ⛳️{club.name}
-                </span>
+                <Link href={`/golf/${club.id}`} className='block p-4 hover:bg-gray-50 transition-colors duration-200 rounded-lg shadow-sm'>
+                  <div className='flex items-center space-x-3'>
+                    <span className='flex h-8 w-8 rounded-full bg-emerald-500 text-white items-center justify-center shrink-0'>
+                      ⛳️
+                    </span>
+                  <div className='flex-1 min-w-0'>
+                    <span className='text-sm font-medium text-gray-900 truncate'>
+                    {club.name}
+                    </span>
+                    <span className='text-[11px] tabular-nums font-semibold text-emerald-700/80'>
+                    {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                </div>
                 </Link>
               </li>
             ))

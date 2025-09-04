@@ -37,7 +37,7 @@
 // }
 
 import React from 'react';
-import { GolfClub } from '@/types/golfs';
+import { GolfClub } from '../../types/golfs';
 
 type DriverViewProps = {
   club: GolfClub;
@@ -46,7 +46,7 @@ type DriverViewProps = {
 const DriverView: React.FC<DriverViewProps> = ({ club }) => {
   return (
     <div className="p-3 bg-white border border-gray-200 rounded-lg space-y-2">
-      <h2 className="text-sm font-medium text-gray-900">일반 정보</h2>
+      <h2 className="text-sm font-medium text-gray-900">기사용 정보</h2>
       <p className="text-xs text-gray-500">구내식당: {club.name}</p>
       <p className="text-xs text-gray-500">대기실: {club.location}</p>
     </div>
